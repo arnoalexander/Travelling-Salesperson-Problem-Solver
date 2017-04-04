@@ -11,7 +11,9 @@ public class Main {
      * @param args argumen
      */
     public static void main(String[] args) {
+
+
         MainFrame mainFrame = new MainFrame("TSP Solver");
-        mainFrame.run();
+        new Thread(mainFrame).start();
     }
 }

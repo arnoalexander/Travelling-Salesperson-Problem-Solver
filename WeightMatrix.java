@@ -120,7 +120,6 @@ public class WeightMatrix {
     numberOfSimpulToSolve++;
     while (!queue.isEmpty()) {
       head = queue.poll();
-      shortestTourWeight = head.cost;
       if (head.level < numberOfVertex) { //bukan daun
         for (int i = 0; i < numberOfVertex; ++i) {
           if (!head.isVisited[i]) {
@@ -146,6 +145,10 @@ public class WeightMatrix {
       solution[i] = head.vertex;
       head = head.parent;
     }
+    shortestTourWeight = 0;
+    for (int i = 0; i < numberOfVertex; ++i) {
+      shortestTourWeight += weight[solution[i]][solution[(i+1)%numberOfVertex]];
+    }
     return solution;
   }
 
@@ -162,7 +165,6 @@ public class WeightMatrix {
     numberOfSimpulToSolve++;
     while (!queue.isEmpty()) {
       head = queue.poll();
-      shortestTourWeight = head.cost;
       if (head.level < numberOfVertex) { //bukan daun
         for (int i = 0; i < numberOfVertex; ++i) {
           if (head.matrix.weight[head.vertex][i] != INVALID_WEIGHT) {
@@ -187,6 +189,10 @@ public class WeightMatrix {
     for (int i = numberOfVertex-1; i >= 0; --i) {
       solution[i] = head.vertex;
       head = head.parent;
+    }
+    shortestTourWeight = 0;
+    for (int i = 0; i < numberOfVertex; ++i) {
+      shortestTourWeight += weight[solution[i]][solution[(i+1)%numberOfVertex]];
     }
     return solution;
   }
@@ -268,6 +274,7 @@ public class WeightMatrix {
         cost += weight[i][indexOfMinimumNeighbor[i][0]];
         cost += weight[i][indexOfMinimumNeighbor[i][1]];
       }
+      if (parent != null)
       cost /= 2;
     }
 
@@ -364,7 +371,7 @@ public class WeightMatrix {
   }
 
   /**
-   * Komparaor agar SimpulReducedCostMatrix dapat dimasukkan ke dalam priority queue.
+   * Komparator agar SimpulReducedCostMatrix dapat dimasukkan ke dalam priority queue.
    */
   private class SimpulReducedCostMatrixComparator implements Comparator<SimpulReducedCostMatrix> {
     @Override
@@ -378,7 +385,7 @@ public class WeightMatrix {
   }
 
   /**
-   * Komparaor agar SimpulBobotTurLengkap dapat dimasukkan ke dalam priority queue.
+   * Komparator agar SimpulBobotTurLengkap dapat dimasukkan ke dalam priority queue.
    */
   private class SimpulBobotTurLengkapComparator implements Comparator<SimpulBobotTurLengkap> {
     @Override
